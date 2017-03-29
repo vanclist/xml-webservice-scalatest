@@ -16,6 +16,8 @@ for testing need we can have some "handles" for forced update. If the service is
 
 Scalatest provides concise stdout:
 ```
+$ sbt test
+
 FixedPricePaymentType:
 - Campaign should be filtered by price if publisher's clientId is internal client (2 seconds, 535 milliseconds)
 - Campaign should be filtered by price if publisher's clientId is internal client (3 seconds, 81 milliseconds)
@@ -31,4 +33,4 @@ Suites: completed 3, aborted 0
 Tests: succeeded 5, failed 0, canceled 0, ignored 0, pending 1
 All tests passed.
 ```
-Simple HTML report will generated as well (see [examples](https://github.com/vanclist/xml-webservice-scalatest/tree/master/examples/report "/examples")), which can be attached to your CI task.
+Simple HTML report will be generated as well (see [examples](https://github.com/vanclist/xml-webservice-scalatest/tree/master/examples/report "/examples")), which can be attached to your CI task artifacts.
