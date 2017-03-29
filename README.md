@@ -25,11 +25,10 @@ ExchangeTypeTest:
 - CDN exchange: single campaign with wrapper VAST (2 seconds, 848 milliseconds)
 - CDN exchange: multiple campaigns with wrapper VASTs (3 seconds, 919 milliseconds) (pending)
 - CDN exchange: wrapper campaign + inline campaign (pending)
-ScalaTest
 Run completed in 14 seconds.
 Total number of tests run: 5
 Suites: completed 3, aborted 0
 Tests: succeeded 5, failed 0, canceled 0, ignored 0, pending 1
 All tests passed.
 ```
-Simple HTML report will generated as well (see [examples](https://github.com/vanclist/xml-webservice-scalatest/tree/master/src "/examples")), which can be attached to your CI task.
+Simple HTML report will generated as well (see [examples](https://github.com/vanclist/xml-webservice-scalatest/tree/master/examples/report "/examples")), which can be attached to your CI task.
