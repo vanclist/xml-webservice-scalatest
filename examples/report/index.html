@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <title>ScalaTest Results</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="Expires" content="-1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <link href="css/styles.css" rel="stylesheet"/>
+        
+        <script type="text/javascript" src="js/d3.v2.min.js"></script>
+        <script type="text/javascript" src="js/sorttable.js"></script>
+        <script type="text/javascript">
+          var tagMap = {};
+var SUCCEEDED_BIT = 1;
+var FAILED_BIT = 2;
+var IGNORED_BIT = 4;
+var PENDING_BIT = 8;
+var CANCELED_BIT = 16;
+function applyFilter() {
+  var mask = 0;
+  if (document.getElementById('succeeded_checkbox').checked)
+    mask |= SUCCEEDED_BIT;
+  if (document.getElementById('failed_checkbox').checked)
+    mask |= FAILED_BIT;
+  if (document.getElementById('ignored_checkbox').checked)
+    mask |= IGNORED_BIT;
+  if (document.getElementById('pending_checkbox').checked)
+    mask |= PENDING_BIT;
+  if (document.getElementById('canceled_checkbox').checked)
+    mask |= CANCELED_BIT;
+  for (var key in tagMap) {
+    if (tagMap.hasOwnProperty(key)) {
+      var bitSet = tagMap[key];
+      var element = document.getElementById(key);
+      if ((bitSet & mask) != 0)
+        element.style.display = "table-row";
+      else 
+        element.style.display = "none";
+    }
+  }
+}
+function showDetails(suiteName) {
+  document.getElementById('details_view').innerHTML = "<iframe src='" + suiteName + ".html' width='100%' height='100%'></iframe>";
+}
+function resizeDetailsView() {
+  var headerView = document.getElementById('scalatest-header');
+  var detailsView = document.getElementById('details_view');
+  var summaryView = document.getElementById('summary_view');
+  var left = summaryView.offsetWidth + 30;
+  detailsView.style.left = left + "px";
+  detailsView.style.width = (window.innerWidth - left - 30) + "px";
+  detailsView.style.height = (window.innerHeight - headerView.offsetHeight - 20) + "px";
+}
+
+        </script>
+      </head>
+      <body onresize="resizeDetailsView()">
+        <div class="scalatest-report"> 
+          <div id="scalatest-header" class="scalatest-header-passed">
+      <div id="title">
+        ScalaTest Results
+      </div>
+
+      <div id="summary">
+        <p id="duration">Run completed in 1 minute, 23 seconds.</p>
+        <p id="totalTests">Total number of tests run: 191</p>
+        <p id="suiteSummary">Suites: completed 25, aborted 0</p>
+        <p id="testSummary">Tests: succeeded 191, failed 0, canceled 0, ignored 0, pending 8</p>
+      </div>
+    </div>
+          <table id="summary_view">
+            <tr id="summary_view_row_1">
+              <td id="summary_view_row_1_chart">
+                <div id="chart_div"></div>
+              </td>
+              <td id="summary_view_row_1_legend">
+                <table id="summary_view_row_1_legend_table">
+                  <tr id="summary_view_row_1_legend_table_row_succeeded">
+                    <td id="summary_view_row_1_legend_succeeded_label">Succeeded</td>
+                    <td id="summary_view_row_1_legend_succeeded_count">191</td>
+                    <td id="summary_view_row_1_legend_succeeded_percent">(95.98%)</td>
+                  </tr>
+                  <tr id="summary_view_row_1_legend_table_row_failed">
+                    <td id="summary_view_row_1_legend_failed_label">Failed</td>
+                    <td id="summary_view_row_1_legend_failed_count">0</td>
+                    <td id="summary_view_row_1_legend_failed_percent">(0%)</td>
+                  </tr>
+                  <tr id="summary_view_row_1_legend_table_row_canceled">
+                    <td id="summary_view_row_1_legend_canceled_label">Canceled</td>
+                    <td id="summary_view_row_1_legend_canceled_count">0</td>
+                    <td id="summary_view_row_1_legend_canceled_percent">(0%)</td>
+                  </tr>
+                  <tr id="summary_view_row_1_legend_table_row_ignored">
+                    <td id="summary_view_row_1_legend_ignored_label">Ignored</td>
+                    <td id="summary_view_row_1_legend_ignored_count">0</td>
+                    <td id="summary_view_row_1_legend_ignored_percent">(0%)</td>
+                  </tr>
+                  <tr id="summary_view_row_1_legend_table_row_pending">
+                    <td id="summary_view_row_1_legend_pending_label">Pending</td>
+                    <td id="summary_view_row_1_legend_pending_count">8</td>
+                    <td id="summary_view_row_1_legend_pending_percent">(4.02%)</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr id="summary_view_row_2">
+              <td id="summary_view_row_2_results" colspan="2">
+                <div id="display-filters">
+      <input id="succeeded_checkbox" name="succeeded_checkbox" type="checkbox" checked="checked" onchange="applyFilter()"/> <label id="succeeded_checkbox_label" for="passed_checkbox">Succeeded</label>
+      <input id="failed_checkbox" name="failed_checkbox" type="checkbox" checked="checked" onchange="applyFilter()"/> <label id="failed_checkbox_label" for="failed_checkbox">Failed</label>
+      <input id="canceled_checkbox" name="canceled_checkbox" type="checkbox" checked="checked" onchange="applyFilter()"/> <label id="canceled_checkbox_label" for="canceled_checkbox">Canceled</label>
+      <input id="ignored_checkbox" name="ignored_checkbox" type="checkbox" checked="checked" onchange="applyFilter()"/> <label id="ignored_checkbox_label" for="ignored_checkbox">Ignored</label>
+      <input id="pending_checkbox" name="pending_checkbox" type="checkbox" checked="checked" onchange="applyFilter()"/> <label id="pending_checkbox_label" for="pending_checkbox">Pending</label>
+    </div>
+                <table class="sortable">
+      <tr>
+        <td>Suite</td>
+        <td>Duration (ms.)</td>
+        <td>Succeeded</td>
+        <td>Failed</td>
+        <td>Canceled</td>
+        <td>Ignored</td>
+        <td>Pending</td>
+        <td>Total</td>
+      </tr>
+    <tr id="2d07638c-c38d-4361-9e71-5e0cc4549f8a">
+      <td class="suite_name_passed"><a href="javascript: showDetails('com.example.qa.StatsFraudProofTest')">StatsFraudProofTest</a></td>
+      <td class="duration_passed">45976</td>
+      <td class="succeeded">4</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending">4</td>
+      <td class="total_passed">8</td>
+    </tr><tr id="8e8bf756-32d3-4af7-9462-4e3690ed3896">
+      <td class="suite_name_passed"><a href="javascript: showDetails('com.example.qa.SearchResponseSchemaValidationTest')">SearchResponseSchemaValidationTest</a></td>
+      <td class="duration_passed">89</td>
+      <td class="succeeded">5</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending">2</td>
+      <td class="total_passed">7</td>
+    </tr><tr id="c08e4d6f-0a63-4e8c-a501-04a9003ba25c">
+      <td class="suite_name_passed"><a href="javascript: showDetails('com.example.qa.ExchangeSideTest')">ExchangeSideTest</a></td>
+      <td class="duration_passed">18406</td>
+      <td class="succeeded">6</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending">1</td>
+      <td class="total_passed">7</td>
+    </tr><tr id="629aa002-1a64-4ae1-bad3-5ff1e55a4cac">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.ActionsStatsCountersTest')">ActionsStatsCountersTest</a></td>
+      <td class="duration_passed_all">53090</td>
+      <td class="succeeded">15</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">15</td>
+    </tr><tr id="f036f09a-b847-4144-92fe-7eecd9354090">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.AdRequestsStatsPublisherLimitsTest')">AdRequestsStatsPublisherLimitsTest</a></td>
+      <td class="duration_passed_all">40295</td>
+      <td class="succeeded">5</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">5</td>
+    </tr><tr id="38b8c526-0022-4567-8c82-fdd05e46e6b0">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.AdRequestsStatsCampaignLimitsTest')">AdRequestsStatsCampaignLimitsTest</a></td>
+      <td class="duration_passed_all">60824</td>
+      <td class="succeeded">7</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">7</td>
+    </tr><tr id="e2e57d1f-a86e-4e84-bdf5-be1e88fa9371">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.AdRequestsStatsCountersTest')">AdRequestsStatsCountersTest</a></td>
+      <td class="duration_passed_all">42523</td>
+      <td class="succeeded">7</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">7</td>
+    </tr><tr id="0b4e6bd0-34ae-4f57-87e7-8619326efaff">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.AdminExchangeTest')">AdminExchangeTest</a></td>
+      <td class="duration_passed_all">17384</td>
+      <td class="succeeded">2</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">2</td>
+    </tr><tr id="6037b00a-bb40-4ad6-95d3-1a8d51eef1e0">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.PublisherBlackMobileListsTest')">PublisherBlackMobileListsTest</a></td>
+      <td class="duration_passed_all">44594</td>
+      <td class="succeeded">13</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">13</td>
+    </tr><tr id="ffa81b39-9d26-4293-bbfa-b2455264ba0a">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.PublisherSourcesFilterTest')">PublisherSourcesFilterTest</a></td>
+      <td class="duration_passed_all">41663</td>
+      <td class="succeeded">6</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">6</td>
+    </tr><tr id="25eb0fe3-876e-454b-bfbd-39eb9a9cbacf">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.PublisherWhiteMobileListsTest')">PublisherWhiteMobileListsTest</a></td>
+      <td class="duration_passed_all">65839</td>
+      <td class="succeeded">18</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">18</td>
+    </tr><tr id="0fa7af59-eac3-409a-aa65-d79dd83361f4">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.CampaignBlackMobileListsTest')">CampaignBlackMobileListsTest</a></td>
+      <td class="duration_passed_all">40389</td>
+      <td class="succeeded">13</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">13</td>
+    </tr><tr id="4f415ecf-c798-445f-a3d7-9b05d3c1472d">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.CampaignSourcesFilterTest')">CampaignSourcesFilterTest</a></td>
+      <td class="duration_passed_all">27337</td>
+      <td class="succeeded">6</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">6</td>
+    </tr><tr id="802529b6-f3bf-42a9-a424-362afedc4076">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.CampaignWhiteMobileListsTest')">CampaignWhiteMobileListsTest</a></td>
+      <td class="duration_passed_all">62025</td>
+      <td class="succeeded">18</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">18</td>
+    </tr><tr id="8a9aa033-d256-4889-8f21-21b9fc36a120">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.FixPricePaymentTypeTest')">FixPricePaymentTypeTest</a></td>
+      <td class="duration_passed_all">16580</td>
+      <td class="succeeded">4</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">4</td>
+    </tr><tr id="bc17fefa-4a4d-4b37-84d5-abce348092b0">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.FloorPricePaymentTypeTest')">FloorPricePaymentTypeTest</a></td>
+      <td class="duration_passed_all">6434</td>
+      <td class="succeeded">2</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">2</td>
+    </tr><tr id="e352af6b-a0d4-44b3-ad88-f13d0acc6b4f">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.PlayerHeightTest')">PlayerHeightTest</a></td>
+      <td class="duration_passed_all">30259</td>
+      <td class="succeeded">9</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">9</td>
+    </tr><tr id="c6646ba4-d5c4-41e6-ba19-3d1f3e23cdfd">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.PlayerWidthTest')">PlayerWidthTest</a></td>
+      <td class="duration_passed_all">30399</td>
+      <td class="succeeded">9</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">9</td>
+    </tr><tr id="b09c7174-7485-4367-8b81-5a8d5250258f">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.ProdSmokeTest')">ProdSmokeTest</a></td>
+      <td class="duration_passed_all">465</td>
+      <td class="succeeded">1</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">1</td>
+    </tr><tr id="a1fa2a08-4fb7-4e96-9c71-d1e3a5fbb622">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.SearchQueryValidationTest')">SearchQueryValidationTest</a></td>
+      <td class="duration_passed_all">301</td>
+      <td class="succeeded">22</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">22</td>
+    </tr><tr id="9b2d685e-df76-47e6-9405-e445a31ec524">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.StatsResponseTest')">StatsResponseTest</a></td>
+      <td class="duration_passed_all">37</td>
+      <td class="succeeded">3</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">3</td>
+    </tr><tr id="7c07d2d9-f49a-413c-9a6c-1768e77f3ab6">
+      <td class="suite_name_passed_all"><a href="javascript: showDetails('com.example.qa.ExchangeSourcesFilterTest')">ExchangeSourcesFilterTest</a></td>
+      <td class="duration_passed_all">41646</td>
+      <td class="succeeded">6</td>
+      <td class="failed_zero">0</td>
+      <td class="canceled_zero">0</td>
+      <td class="ignored_zero">0</td>
+      <td class="pending_zero">0</td>
+      <td class="total_passed_all">6</td>
+    </tr>
+    </table>
+              </td>
+            </tr>
+          </table>
+          <div id="details_view">
+            <span id="click_suite_hint">Click on suite name to view details.</span> <br/>
+            <span id="click_column_hint">Click on column name to sort.</span>
+          </div>
+        </div>
+        <script type="text/javascript">
+          /* modified from http://www.permadi.com/tutorial/cssGettingBackgroundColor/index.html - */
+function getBgColor(elementId)
+{
+  var element = document.getElementById(elementId);
+  if (element.currentStyle)
+    return element.currentStyle.backgroundColor;
+  if (window.getComputedStyle)
+  {
+    var elementStyle=window.getComputedStyle(element,"");
+    if (elementStyle)
+      return elementStyle.getPropertyValue("background-color");
+  }
+  // Return 0 if both methods failed.
+  return 0;
+}
+var data = [191, 0, 0, 8, 0];
+var color = [getBgColor('summary_view_row_1_legend_succeeded_label'), 
+             getBgColor('summary_view_row_1_legend_failed_label'), 
+             getBgColor('summary_view_row_1_legend_ignored_label'), 
+             getBgColor('summary_view_row_1_legend_pending_label'), 
+             getBgColor('summary_view_row_1_legend_canceled_label')
+            ];
+var width = document.getElementById('chart_div').offsetWidth,
+    height = document.getElementById('chart_div').offsetHeight,
+    outerRadius = Math.min(width, height) / 2,
+    innerRadius = 0,
+    donut = d3.layout.pie(),
+    arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+var vis = d3.select("#chart_div")
+            .append("svg")
+            .data([data])
+            .attr("width", width)
+            .attr("height", height);
+var arcs = vis.selectAll("g.arc")
+              .data(donut)
+              .enter().append("g")
+              .attr("class", "arc")
+              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+arcs.append("path")
+    .attr("fill", function(d, i) { return color[i]; })
+    .attr("d", arc);
+
+        </script>
+        <script type="text/javascript">
+          tagMap = { 
+"bc17fefa-4a4d-4b37-84d5-abce348092b0": 1, 
+"802529b6-f3bf-42a9-a424-362afedc4076": 1, 
+"ffa81b39-9d26-4293-bbfa-b2455264ba0a": 1, 
+"e352af6b-a0d4-44b3-ad88-f13d0acc6b4f": 1, 
+"0b4e6bd0-34ae-4f57-87e7-8619326efaff": 1, 
+"93ed6f73-6b4c-48bb-8326-9864b1d79914": 1, 
+"9b2d685e-df76-47e6-9405-e445a31ec524": 1, 
+"38b8c526-0022-4567-8c82-fdd05e46e6b0": 1, 
+"25eb0fe3-876e-454b-bfbd-39eb9a9cbacf": 1, 
+"2d07638c-c38d-4361-9e71-5e0cc4549f8a": 9, 
+"e2e57d1f-a86e-4e84-bdf5-be1e88fa9371": 1, 
+"103c5983-efe7-4b9e-9569-fb15e0087094": 9, 
+"0fa7af59-eac3-409a-aa65-d79dd83361f4": 1, 
+"a1fa2a08-4fb7-4e96-9c71-d1e3a5fbb622": 1, 
+"c6646ba4-d5c4-41e6-ba19-3d1f3e23cdfd": 1, 
+"6037b00a-bb40-4ad6-95d3-1a8d51eef1e0": 1, 
+"f036f09a-b847-4144-92fe-7eecd9354090": 1, 
+"8a9aa033-d256-4889-8f21-21b9fc36a120": 1, 
+"7c07d2d9-f49a-413c-9a6c-1768e77f3ab6": 1, 
+"b09c7174-7485-4367-8b81-5a8d5250258f": 1, 
+"ea30cdd4-fa34-465e-a277-d561079f5c89": 1, 
+"4f415ecf-c798-445f-a3d7-9b05d3c1472d": 1, 
+"8e8bf756-32d3-4af7-9462-4e3690ed3896": 9, 
+"629aa002-1a64-4ae1-bad3-5ff1e55a4cac": 1, 
+"c08e4d6f-0a63-4e8c-a501-04a9003ba25c": 9};
+applyFilter();
+        </script>
+        <script type="text/javascript">
+          resizeDetailsView();
+        </script>
+      </body>
+    </html>
