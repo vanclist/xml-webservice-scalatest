@@ -28,8 +28,9 @@ trait CommonVals extends HttpClientFixture with UriBuilderFixture {
     Host(ConfigLoader.vastServiceHost),
     ConfigLoader.vastServicePort
   )
-  val U = UriBuilder
+  /** building URIs and calling them are so common in tests so it's would be handy to assign concise vals */
   val H = HttpClient
+  val U = UriBuilder
   val settingsDb = Database.forConfig("app.inventory.settingsdb")
   val settingsReloadLatency = Integer.getInteger("cacheReloadTimeoutMs", ConfigLoader.cacheReloadTimeout).toLong
   val timeShift = Integer.getInteger("timeShiftSeconds", ConfigLoader.timeShiftSeconds)
@@ -53,8 +54,8 @@ trait CommonVals extends HttpClientFixture with UriBuilderFixture {
   val smartTvPub = 2718
 }
 
-trait TestUtils extends CommonVals with fixture.FunSuiteLike with Matchers with Eventually with IntegrationPatience with BeforeAndAfterAll with BeforeAndAfterEach
-  with HttpClientFixture with MongoDbFixture with StrictLogging {
+trait TestUtils extends CommonVals with fixture.FunSuiteLike with Matchers with Eventually with IntegrationPatience
+  with BeforeAndAfterAll with BeforeAndAfterEach with MongoDbFixture with StrictLogging {
 
   implicit def intTimes(i: Int) = new {
     def times(fn: => Unit) = (1 to i) foreach (x => fn)
@@ -93,7 +94,7 @@ trait TestUtils extends CommonVals with fixture.FunSuiteLike with Matchers with 
     Await.result(dbRun(query), timeout)
   }
 
-  /* Queries for essential DB entities creation */
+  /** Queries for essential DB entities creation */
 
   def publisherQuery(userId: Int, status: String = "enabled", directionType: String = mobile,
                      paymentType: String = secondPrice, cpm: BigDecimal = 1.0,
@@ -132,7 +133,7 @@ trait TestUtils extends CommonVals with fixture.FunSuiteLike with Matchers with 
 
   def campaignToCountryQuery(campaignId: Int, countryId: Int) = campaignsToCountries += (campaignId, countryId)
 
-  /* Auxiliary DB queries */
+  /** Auxiliary DB queries */
 
   def userClientIdQuery(user: Int) = for {u <- users if u.id === user} yield u.clientId
 
@@ -157,34 +158,36 @@ trait TestUtils extends CommonVals with fixture.FunSuiteLike with Matchers with 
     ).foreach(dbAwait(_))
   }
 
-  /* MongoDB helpers */
+  /** MongoDB helpers
+    * Ad requests and action stats might be pre-aggregated directly on storage server:
+    * counters are incremented to document with `timestamp`field which is truncated to start of current hour
+    */
 
   def mongoSelector(directionType: String = desktop, publisher: Int, sid: Option[String] = None,
                     domain: Option[String] = Some("site.url"), appName: Option[String] = Some("app.name"),
                     appBundle: Option[String] = Some("app.bundle"), campaign: Option[Int] = None): BSONDocument = {
 
-    var doc = BSONDocument(
-      "publisherId" -> publisher,
-      "referer" -> sid.getOrElse(publisher.toString),
-      "timestamp" -> truncatedTimestamp
-    )
-
-    doc = doc.merge(
-      directionType match {
-        case `mobile` | `smartTv` =>
-          BSONDocument(
-            "domain" -> None,
-            "appName" -> appName,
-            "appBundle" -> appBundle
-          )
-        case `desktop` =>
-          BSONDocument(
-            "domain" -> domain,
-            "appName" -> None,
-            "appBundle" -> None
-          )
-      }
-    )
+    val doc =
+      BSONDocument(
+        "publisherId" -> publisher,
+        "referer" -> sid.getOrElse(publisher.toString),
+        "timestamp" -> truncatedTimestamp
+      ).merge(
+        directionType match {
+          case `mobile` | `smartTv` =>
+            BSONDocument(
+              "domain" -> None,
+              "appName" -> appName,
+              "appBundle" -> appBundle
+            )
+          case `desktop` =>
+            BSONDocument(
+              "domain" -> domain,
+              "appName" -> None,
+              "appBundle" -> None
+            )
+        }
+      )
 
     campaign match {
       case Some(c) => doc.merge("cmp" -> c)

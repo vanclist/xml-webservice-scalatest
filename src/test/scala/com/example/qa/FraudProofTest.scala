@@ -1,14 +1,26 @@
 package com.example.qa
 
 import com.example.qa.vastservice.model.TestData
-import com.example.qa.vastservice.orm.ConfigurationTables._
 import org.scalatest._
-import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
 
+/**
+  * Ads are tracked within next flow: video player requests for ad, then parses server's response and calls
+  * tracking URLs during ad play. Those URLs should contain query params with unique params to distinct
+  * ad request from which the tracking event comes from.
+  * For instance, `impression` action URL looks like:
+  * <Ad id="mjxrwzsa-s">
+  *   <InLine>
+  *     <AdSystem version="1.0">The Ad Company</AdSystem>
+  *     <Impression><![CDATA[http://qa.exampke.com/track/impression?hash=]]></Impression>
+  *   </Inline>
+  *   <.../>
+  * </Ad>
+  * Tracking action fraud is possible if hash expires with some delay after first action call.
+  */
 class FraudProofTest extends fixture.FunSuiteLike with TestUtils {
 
   case class FixtureParam(data: TestData)
@@ -78,19 +90,18 @@ class FraudProofTest extends fixture.FunSuiteLike with TestUtils {
     }
   }
 
-  test("tracking event fraud proof: ad started") { fixture =>
-    /** By VAST spec, tracking event URLs are placed under <TrackingEvents> node sequence, i.e.:
-    <Linear>
-      <TrackingEvents>
-        <Tracking event="start"><![CDATA[http://example.com/tracking/start?id=hash2&data=]]></Tracking>
-        <Tracking event="midpoint"><![CDATA[http://example.com/tracking/midpoint?id=hash2&data=]]></Tracking>
-        <Tracking event="firstQuartile"><![CDATA[http://example.com/tracking/firstQuartile?id=hash2&data=]]></Tracking>
-        <Tracking event="thirdQuartile"><![CDATA[http://example.com/tracking/thirdQuartile?id=hash2&data=]]></Tracking>
-        <Tracking event="complete"><![CDATA[http://example.com/tracking/complete?id=hash2&data=]]></Tracking>
-      </TrackingEvents>
-    </Linear>
+  /** By VAST spec, tracking event URLs are placed under <TrackingEvents> node sequence, i.e.:
+    * <Linear>
+    *   <TrackingEvents>
+    *     <Tracking event="start"><![CDATA[http://example.com/tracking/start?id=hash2&data=]]></Tracking>
+    *     <Tracking event="midpoint"><![CDATA[http://example.com/tracking/midpoint?id=hash2&data=]]></Tracking>
+    *     <Tracking event="firstQuartile"><![CDATA[http://example.com/tracking/firstQuartile?id=hash2&data=]]></Tracking>
+    *     <Tracking event="thirdQuartile"><![CDATA[http://example.com/tracking/thirdQuartile?id=hash2&data=]]></Tracking>
+    *     <Tracking event="complete"><![CDATA[http://example.com/tracking/complete?id=hash2&data=]]></Tracking>
+    *   </TrackingEvents>
+    * </Linear>
     */
-
+  test("tracking event fraud proof: ad started") { fixture =>
     val vast = H(U.search(publisherId = fixture.data.publisher, ip = jmIp)).vast
     val startedUrl = (vast \\ "Tracking").filter(e => (e \ "@event").text == "started").text
     2 times H(startedUrl)

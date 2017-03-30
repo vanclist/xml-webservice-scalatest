@@ -14,8 +14,10 @@ final case class ViewProgress(
                                completed: Long
                              )
 
+/** Let's assume that our MongoDB storage designed to have separate collection for each month,
+  * so collection names are `requests_3_2017`, `actions_12_2017` etc.
+  */
 object MongoDb extends LazyLogging {
-  // TODO: add scalaDoc
   def getCollection(name: String)(implicit db: DefaultDB): BSONCollection = {
     db.collection[BSONCollection](name)
   }

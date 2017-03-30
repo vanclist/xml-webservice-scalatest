@@ -25,9 +25,9 @@ SecondPricePaymentType:
 - Second price payment type: price filter is passed for default query params (2 seconds, 946 milliseconds)
 ExchangeTypeTest:
 - CDN exchange: single campaign with wrapper VAST (2 seconds, 848 milliseconds)
-- CDN exchange: multiple campaigns with wrapper VASTs (3 seconds, 919 milliseconds) (pending)
+- CDN exchange: multiple campaigns with wrapper VASTs (3 seconds, 919 milliseconds)
 - CDN exchange: wrapper campaign + inline campaign (pending)
-Run completed in 14 seconds.
+Run completed in 17 seconds.
 Total number of tests run: 5
 Suites: completed 3, aborted 0
 Tests: succeeded 5, failed 0, canceled 0, ignored 0, pending 1

@@ -41,15 +41,7 @@ class SecondPricePaymentTypeTest extends TestUtils {
   }
 
   override def afterEach() {
-    eventually {
-      for (collection <- Seq(MongoDb.currentAdRequests, MongoDb.currentActions)) {
-        val doc = Await.result(
-          MongoDb.getCollection(collection).remove(
-            BSONDocument("publisherId" -> BSONInteger(testFixture.data.publisher))
-          ), statsQueryTimeout)
-        doc.ok shouldBe true
-      }
-    }
+    flushMongoStats(testFixture.data.publisher)
   }
 
   override def afterAll() {
@@ -86,7 +78,7 @@ class FixedPricePaymentTypeTest extends TestUtils {
   val testFixture = FixtureParam(genTestData)
 
   def genTestData: TestData = {
-    // take attention on user.clientId
+    /** take attention on user.clientId */
     val entities = for {
       user <- dbRun(userQuery(randomInt = random.nextInt, clientId = internalClientId))
       publisher <- dbRun(
@@ -113,15 +105,7 @@ class FixedPricePaymentTypeTest extends TestUtils {
   }
 
   override def afterEach() {
-    eventually {
-      for (collection <- Seq(MongoDb.currentAdRequests, MongoDb.currentActions)) {
-        val doc = Await.result(
-          MongoDb.getCollection(collection).remove(
-            BSONDocument("publisherId" -> BSONInteger(testFixture.data.publisher))
-          ), statsQueryTimeout)
-        doc.ok shouldBe true
-      }
-    }
+    flushMongoStats(testFixture.data.publisher)
   }
 
   override def afterAll() {
